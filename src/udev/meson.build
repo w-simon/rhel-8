@@ -36,6 +36,8 @@ libudev_core_sources = '''
         net/link-config.h
         net/ethtool-util.c
         net/ethtool-util.h
+        net/naming-scheme.c
+        net/naming-scheme.h
 '''.split()
 
 if conf.get('HAVE_KMOD') == 1
@@ -181,6 +183,14 @@ foreach prog : [['ata_id/ata_id.c'],
                    install : true,
                    install_dir : udevlibexecdir)
 endforeach
+
+executable('udev-net_id-standalone',
+           'udev-net_id-standalone.c',
+           include_directories : includes,
+           link_with : [libudev_core],
+           install_rpath : udev_rpath,
+           install : true,
+           install_dir : bindir)
 
 install_data('udev.conf',
              install_dir : join_paths(sysconfdir, 'udev'))
